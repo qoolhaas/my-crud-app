@@ -13,7 +13,7 @@
 </head>
 <body>
 <form method="post">
-
+    <!-- Почему то ломается верстка, временно поставил звездочки -->
     <span id="**add" class="**user">
         <p>Name:<input type="text" name="name"></p>
         <br>
