@@ -1,7 +1,7 @@
 package servlet;
 
 import entity.User;
-import service.UserHiberService;
+import service.UserMainService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class AddServlet extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
-        boolean flag = UserHiberService.getInstance().addUser(new User(name, password));
+        boolean flag = UserMainService.getInstance().addUser(new User(name, password));
 
         if(flag) {
             resp.sendRedirect("http://localhost:8080/list");

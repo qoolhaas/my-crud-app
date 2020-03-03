@@ -2,22 +2,40 @@ package dao;
 
 import entity.User;
 import org.hibernate.*;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import util.DBHelper;
 
 import java.util.List;
 
 public class UserHibernateDAO implements UserDAO<User> {
 
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
     private static UserHibernateDAO userHibernateDAO;
 
-    private UserHibernateDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            sessionFactory = createSessionFactory();
+        }
+
+        return sessionFactory;
     }
+
+    private static SessionFactory createSessionFactory() {
+        Configuration configuration = DBHelper.getInstance().getConfiguration();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
+        ServiceRegistry serviceRegistry = builder.build();
+
+        return configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    private UserHibernateDAO(SessionFactory sessionFactory) { this.sessionFactory = sessionFactory; }
 
     public static UserHibernateDAO getInstance() {
         if (userHibernateDAO == null) {
-            userHibernateDAO = new UserHibernateDAO(DBHelper.getHiberSessionFactory());
+            userHibernateDAO = new UserHibernateDAO(getSessionFactory());
         }
         return userHibernateDAO;
     }
@@ -54,7 +72,7 @@ public class UserHibernateDAO implements UserDAO<User> {
             query.setParameter("name", name);
             list = query.list();
             transaction.commit();
-        } catch (Exception e) {
+        } catch (Exception e) {e.printStackTrace();
             transaction.rollback();
             e.printStackTrace();
         }
@@ -132,7 +150,7 @@ public class UserHibernateDAO implements UserDAO<User> {
             }
         } catch (Exception e) {
             transaction.rollback();
-            throw new HibernateException(e);
+            e.printStackTrace();
         }
         session.close();
 

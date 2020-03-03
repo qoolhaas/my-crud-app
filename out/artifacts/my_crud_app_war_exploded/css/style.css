@@ -1,0 +1,44 @@
+#grid {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    grid-gap: 5px;
+}
+#add {
+    width: 160px;
+    height: 80px;
+}
+.user {
+    font-family: Arial;
+    font-size: 18px;
+    padding: .5em;
+    background: gold;
+    text-align: center;
+}
+.link {
+    width: 160px;
+    height: 80px;
+    font-family: Arial;
+    font-size: 18px;
+    background: gold;
+    text-align: center;
+    padding: .5em;
+}
+button, .butt {
+    font-family: Arial;
+    background-color: darkorange;
+    border: none;
+    color: black;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+a {
+    font-family: Arial;
+    background-color: orange;
+    text-decoration: none;
+    font-size: 24px;
+}
+

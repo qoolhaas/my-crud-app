@@ -1,13 +1,13 @@
 package service;
 
-import dao.UserJdbcDAO;
+import dao.*;
 import entity.User;
 
 import java.util.List;
 
 public class UserJdbcService implements UserService<User> {
     private static UserJdbcService userJdbcService;
-    private UserJdbcDAO dao;
+    private UserDAO dao;
 
     private UserJdbcService() {
         dao = UserJdbcDAO.getInstance();

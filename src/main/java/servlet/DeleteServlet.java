@@ -1,8 +1,7 @@
 package servlet;
 
-import service.UserHiberService;
+import service.UserMainService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +20,7 @@ public class DeleteServlet extends HttpServlet {
             id = Long.parseLong(idTemp);
         }
 
-        UserHiberService.getInstance().deleteUserById(id);
+        UserMainService.getInstance().deleteUserById(id);
 
         resp.sendRedirect("http://localhost:8080/list");
         resp.setStatus(200);

@@ -1,7 +1,7 @@
 package servlet;
 
 import entity.User;
-import service.UserHiberService;
+import service.UserMainService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ public class ListServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> users = UserHiberService.getInstance().listUsers();
+        List<User> users = UserMainService.getInstance().listUsers();
         req.setAttribute("users", users);
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/list.jsp");

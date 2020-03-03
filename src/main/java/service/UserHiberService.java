@@ -1,6 +1,6 @@
 package service;
 
-import dao.UserHibernateDAO;
+import dao.*;
 import entity.User;
 import org.hibernate.HibernateException;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class UserHiberService implements UserService<User>  {
     private static UserHiberService userHiberService;
-    private UserHibernateDAO dao;
+    private UserDAO dao;
 
     private UserHiberService() {
         dao = UserHibernateDAO.getInstance();
@@ -21,47 +21,11 @@ public class UserHiberService implements UserService<User>  {
         return userHiberService;
     }
 
-    public boolean addUser(User user) {
-        boolean flag = false;
+    public boolean addUser(User user) { return dao.addUser(user); }
 
-        try {
-            flag = dao.addUser(user);
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
+    public List<User> listUsers() { return dao.listUsers(); }
 
-        return flag;
-    }
+    public void deleteUserById(Long id) { dao.deleteUserById(id); }
 
-    public List<User> listUsers() {
-        List<User> list = null;
-
-        try {
-            list = dao.listUsers();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
-
-    public void deleteUserById(Long id) {
-        try {
-            dao.deleteUserById(id);
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean editUser(User user) {
-        boolean flag = false;
-
-        try {
-            flag = dao.editUser(user);
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return flag;
-    }
+    public boolean editUser (User user) { return dao.editUser(user); }
 }

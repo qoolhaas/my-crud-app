@@ -17,7 +17,7 @@ public class UserJdbcDAO implements UserDAO<User> {
 
     public static UserJdbcDAO getInstance() {
         if (userJdbcDAO == null) {
-            userJdbcDAO = new UserJdbcDAO(DBHelper.getJdbcSqlConnection());
+            userJdbcDAO = new UserJdbcDAO(DBHelper.getConnection());
         }
         return userJdbcDAO;
     }
@@ -99,7 +99,7 @@ public class UserJdbcDAO implements UserDAO<User> {
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate(query);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,13 +109,16 @@ public class UserJdbcDAO implements UserDAO<User> {
         boolean flag = false;
         String query = "update db_example.users set name = ?, password = ? where id = ?";
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setLong(3, user.getId());
-            flag = true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (!isNameExist(user.getName())) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, user.getName());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setLong(3, user.getId());
+                preparedStatement.executeUpdate();
+                flag = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return flag;
     }

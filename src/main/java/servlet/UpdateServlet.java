@@ -2,7 +2,7 @@ package servlet;
 
 import entity.User;
 import org.apache.commons.lang3.math.NumberUtils;
-import service.UserHiberService;
+import service.UserMainService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ public class UpdateServlet extends HttpServlet {
             id = Long.parseLong(idTemp);
         }
 
-        boolean flag = UserHiberService.getInstance().editUser(new User(id, name, password));
+        boolean flag = UserMainService.getInstance().editUser(new User(id, name, password));
 
         if(flag) {
             resp.sendRedirect("http://localhost:8080/list");
