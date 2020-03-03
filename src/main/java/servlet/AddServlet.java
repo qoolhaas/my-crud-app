@@ -1,7 +1,7 @@
 package servlet;
 
 import entity.User;
-import service.UserService;
+import service.UserHiberService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,25 +14,20 @@ import java.io.IOException;
 @WebServlet("/add")
 public class AddServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/add.jsp");
-        requestDispatcher.forward(req, resp);
-        resp.setStatus(200);
-    }
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
-        UserService.getInstance().createTable();
-        if(!UserService.getInstance().addUser(new User(name, password))) {
-            req.setAttribute("message", "User already exist!");
+        boolean flag = UserHiberService.getInstance().addUser(new User(name, password));
+
+        if(flag) {
+            resp.sendRedirect("http://localhost:8080/list");
         } else {
-            req.setAttribute("message", "User has been added!");
+            req.setAttribute("message", "User already exist");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            requestDispatcher.forward(req, resp);
         }
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/successAdd.jsp");
-        requestDispatcher.forward(req, resp);
         resp.setStatus(200);
     }
 }

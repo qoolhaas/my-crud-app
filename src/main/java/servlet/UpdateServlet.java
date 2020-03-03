@@ -1,7 +1,8 @@
 package servlet;
 
 import entity.User;
-import service.UserService;
+import org.apache.commons.lang3.math.NumberUtils;
+import service.UserHiberService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,11 +19,21 @@ public class UpdateServlet extends HttpServlet {
         String idTemp = req.getParameter("id");
         String name = req.getParameter("name");
         String password = req.getParameter("password");
-        Long id = Long.parseLong(idTemp);
+        Long id = 0L;
 
-        UserService.getInstance().editUser(new User(id, name, password));
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("views/successUpdate.jsp");
-        requestDispatcher.forward(req, resp);
+        if(NumberUtils.isCreatable(idTemp)) {
+            id = Long.parseLong(idTemp);
+        }
+
+        boolean flag = UserHiberService.getInstance().editUser(new User(id, name, password));
+
+        if(flag) {
+            resp.sendRedirect("http://localhost:8080/list");
+        } else {
+            req.setAttribute("message", "Name already exist");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/error.jsp");
+            requestDispatcher.forward(req, resp);
+        }
         resp.setStatus(200);
     }
 }
